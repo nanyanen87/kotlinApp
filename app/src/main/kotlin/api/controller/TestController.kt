@@ -31,6 +31,7 @@ class TestController(
         val order = "date"
         val type = "video"
         val eventType = "live"
+        val apikey = ""
         val url = "$endPoint?part=$part&channelId=$channelId&key=$apiKey&order=$order&type=$type&eventType=$eventType"
         println(url)
         val response = webClient.getAbs(url).send().coAwait()
