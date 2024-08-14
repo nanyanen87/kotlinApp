@@ -28,7 +28,6 @@ class TestController(
         val part = "snippet"
 //        val channelId = "UCV2vH-9d4UHEbnRjKC0BBmw" // arise
 //        val channelId = "UCfiwzLy-8yKzIbsmZTzxDgw" // arabic
-        val apiKey = "AIzaSyBpWUHNq9NMJIteConvME95jr-XPG0smv8"
         val order = "date"
         val type = "video"
         val eventType = "live"
