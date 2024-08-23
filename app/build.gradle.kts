@@ -20,6 +20,7 @@ repositories {
 }
 
 val vertxVersion = "4.5.8"
+val dotenvKotlinVersion = "6.4.1"
 
 dependencies {
     // Use the Kotlin JUnit 5 integration.
@@ -42,6 +43,8 @@ dependencies {
     implementation("io.vertx:vertx-web:${vertxVersion}")
     implementation("io.vertx:vertx-web-client:${vertxVersion}")
     implementation("io.vertx:vertx-web-templ-freemarker:${vertxVersion}")
+
+    implementation("io.github.cdimascio:dotenv-kotlin:${dotenvKotlinVersion}")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

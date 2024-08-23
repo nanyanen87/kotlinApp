@@ -1,11 +1,14 @@
 package api.controller
 
+import api.exeption.ApiException
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.core.http.HttpMethod
+import io.vertx.kotlin.coroutines.coAwait
 import io.vertx.sqlclient.Pool
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+
 
 
 abstract class RestController(
@@ -22,6 +25,14 @@ abstract class RestController(
         // 例外を投げる
         throw RuntimeException("Method $method is not defined")
     }
+
+    // todo catchExceptionfunを作る
+//    protected open suspend fun catchApiException(rCtx: RoutingContext, e: ApiException) {
+//        // デフォルトではエラーを JSON とステータスコードで返す
+//        rCtx.response().statusCode = e.statusCode
+//        rCtx.response().putHeader("Content-Type", "application/json; charset=UTF-8")
+//        rCtx.response().write(e.renderJson().toBuffer()).coAwait()
+//    }
 
     abstract fun getEndpoint(): String
 

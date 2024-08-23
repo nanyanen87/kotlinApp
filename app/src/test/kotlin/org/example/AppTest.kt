@@ -3,6 +3,7 @@
  */
 package org.example
 
+import api.example.App
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
