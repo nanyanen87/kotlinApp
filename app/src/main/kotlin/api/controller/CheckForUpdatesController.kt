@@ -18,12 +18,6 @@ class CheckForUpdatesController (
     override fun getEndpoint(): String {
         return "/check_for_updates"
     }
-    // ここでエラー処理をする
-    override suspend fun catchApiException(rCtx: RoutingContext, e: ApiException) {
-        rCtx.response().statusCode = e.statusCode
-        rCtx.response().putHeader("Content-Type", "application/json; charset=UTF-8")
-        rCtx.response().write(e.renderJson().toBuffer()).coAwait()
-    }
 
     override suspend fun handleGet(rCtx: RoutingContext) {
         val webClient = WebClient.create(rCtx.vertx())
