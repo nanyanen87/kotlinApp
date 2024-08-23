@@ -49,7 +49,7 @@ class ApiVerticle : CoroutineVerticle() {
             .setHost("localhost")
             .setDatabase("xfolio")
             .setUser("linku")
-            .setPassword("linku");
+            .setPassword("linku")
 
         this.pool = MySQLBuilder
             .pool()
