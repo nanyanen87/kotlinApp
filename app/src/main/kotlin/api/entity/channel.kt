@@ -15,10 +15,9 @@ data class Statistics(
 )
 // jsonからstatisticsを取得するfun
 fun getStatistics(json: JsonObject): Statistics {
-    val statistics = json.getJsonObject("statistics")
     return Statistics(
-        statistics.getInteger("viewCount"),
-        statistics.getInteger("subscriberCount"),
-        statistics.getInteger("videoCount"),
+        json.getString("viewCount").toInt(),
+        json.getString("subscriberCount").toInt(),
+        json.getString("videoCount").toInt(),
     )
 }

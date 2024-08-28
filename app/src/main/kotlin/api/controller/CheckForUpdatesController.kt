@@ -3,6 +3,7 @@ package api.controller
 import api.component.type.ChannelId
 import api.entity.Statistics
 import api.entity.Channel
+import api.entity.Video
 import api.entity.getStatistics
 import api.exeption.ApiException
 import io.vertx.ext.web.RoutingContext
@@ -19,13 +20,16 @@ class CheckForUpdatesController (
         return "/check_for_updates"
     }
 
+    private var oldStatistics = Statistics(0, 0, 0)
+
     override suspend fun handleGet(rCtx: RoutingContext) {
         val webClient = WebClient.create(rCtx.vertx())
         val dotenv = Dotenv.load()
         val apiKey = dotenv["API_KEY"]
         val endPoint = "https://www.googleapis.com/youtube/v3/channels"
 
-        val channelId = ChannelId(rCtx.queryParams().get("channel_id").toInt())
+//        val channelId = ChannelId(rCtx.queryParams().get("channel_id"))
+        val channelId = rCtx.queryParams().get("channel_id")
         val part = rCtx.queryParams().get("part")
         val url = "$endPoint?part=$part&id=$channelId&key=$apiKey"
 
@@ -34,7 +38,6 @@ class CheckForUpdatesController (
         val body = response.bodyAsString("UTF-8")
 
         // videoCountが以前の数字と違う場合はtrueを返す
-        val oldStatistics = Statistics(0, 0, 0)
         val newStatistics = getStatistics(response.bodyAsJsonObject().getJsonArray("items").getJsonObject(0).getJsonObject("statistics"))
 
         // videoCountを比較
@@ -43,6 +46,9 @@ class CheckForUpdatesController (
         } else {
             false
         }
+
+        // oldStatisticsを更新
+        oldStatistics = newStatistics
 
         println(videoCount)
         rCtx.response().end(body)
