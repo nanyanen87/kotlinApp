@@ -74,6 +74,8 @@ class ApiVerticle : CoroutineVerticle() {
         super.stop()
     }
 }
+
+// 一番原始的な形
 //fun setup(router: Router, scope: CoroutineScope) {
 ////    router.route(HttpMethod.GET, "/hello").handler { rCtx ->
 ////      scope.launch { rCtx.response().end("Hello, World!").coAwait() }

@@ -21,6 +21,8 @@ repositories {
 
 val vertxVersion = "4.5.8"
 val dotenvKotlinVersion = "6.4.1"
+val slf4jVersion = "2.0.11"
+val log4j2Version = "2.22.1"
 
 dependencies {
     // Use the Kotlin JUnit 5 integration.
@@ -45,6 +47,13 @@ dependencies {
     implementation("io.vertx:vertx-web-templ-freemarker:${vertxVersion}")
 
     implementation("io.github.cdimascio:dotenv-kotlin:${dotenvKotlinVersion}")
+
+    // ロガー
+    implementation("org.slf4j:slf4j-api:${slf4jVersion}")
+    implementation("org.apache.logging.log4j:log4j-api:${log4j2Version}")
+    implementation("org.apache.logging.log4j:log4j-core:${log4j2Version}")
+    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:${log4j2Version}") // slf4j-2.0系 から slf4j「2」-impl に変わっていることに注意
+    implementation("com.lmax:disruptor:3.4.4")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

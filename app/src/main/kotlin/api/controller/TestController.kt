@@ -1,4 +1,5 @@
 import api.controller.RestController
+import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.RoutingContext
 import io.vertx.kotlin.coroutines.coAwait
 import io.vertx.mysqlclient.MySQLBuilder
@@ -8,6 +9,7 @@ import io.vertx.sqlclient.PoolOptions
 import io.vertx.sqlclient.SqlClient
 import kotlinx.coroutines.CoroutineScope
 import io.vertx.ext.web.client.WebClient
+
 
 
 class TestController(
@@ -22,25 +24,35 @@ class TestController(
         val webClient = WebClient.create(rCtx.vertx())
         // queryパラメータを受け取る
         val channelId = rCtx.queryParams().get("channel_id")
-//        val url = "https://weather.tsukumijima.net/api/forecast/city/400040"
+        val url = "https://weather.tsukumijima.net/api/forecast/city/400040"
 //        val endPoint = "https://www.googleapis.com/youtube/v3/channels?"
-        val endPoint = "https://www.googleapis.com/youtube/v3/search"
+//        val endPoint = "https://www.googleapis.com/youtube/v3/search"
         val part = "snippet"
 //        val channelId = "UCV2vH-9d4UHEbnRjKC0BBmw" // arise
 //        val channelId = "UCfiwzLy-8yKzIbsmZTzxDgw" // arabic
-        val order = "date"
-        val type = "video"
-        val eventType = "live"
-        val apiKey = ""
-        val url = "$endPoint?part=$part&channelId=$channelId&key=$apiKey&order=$order&type=$type&eventType=$eventType"
+//        val order = "date"
+//        val type = "video"
+//        val eventType = "live"
+//        val apiKey = ""
+//        val url = "$endPoint?part=$part&channelId=$channelId&key=$apiKey&order=$order&type=$type&eventType=$eventType"
         println(url)
         val response = webClient.getAbs(url).send().coAwait()
         // itemsの中のvideoIdでlive配信取得可能
         // 文字化けするので、文字コードを指定して文字列に変換
-        val body = response.bodyAsString("UTF-8")
+        val bodyString = response.bodyAsString("UTF-8")
+        val bodyJson = response.bodyAsJsonObject()
 
-        println(body)
-        rCtx.response().end(body)
+        println(bodyString)
+//        rCtx.response().end(body)
+
+        // writeってどういう使い分け？
+//        if (!rCtx.response().isChunked) {
+//            rCtx.response().isChunked = true
+//        }
+//        rCtx.response().putHeader("Content-Type", "application/json; charset=UTF-8")
+//        rCtx.response().write(bodyJson.toBuffer()).coAwait()
+
+
 //        val conn = MySQLConnectOptions()
 //            .setPort(56306)
 //            .setHost("localhost")
@@ -76,5 +88,6 @@ class TestController(
 //            row.getInteger("id")
 //        }
 //        rCtx.response().end(ids.toString())
+
     }
 }
