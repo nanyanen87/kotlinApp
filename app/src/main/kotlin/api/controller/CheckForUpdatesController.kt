@@ -12,7 +12,9 @@ import kotlinx.coroutines.CoroutineScope
 import io.github.cdimascio.dotenv.Dotenv
 import io.vertx.kotlin.coroutines.coAwait
 
-
+/**
+ * チャンネルの更新を確認する
+ */
 class CheckForUpdatesController (
     scope: CoroutineScope
 ) : RestController(scope) {
