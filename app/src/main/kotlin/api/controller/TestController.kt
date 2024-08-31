@@ -43,7 +43,7 @@ class TestController(
         val bodyJson = response.bodyAsJsonObject()
 
         println(bodyString)
-//        rCtx.response().end(body)
+        rCtx.response().end(bodyString)
 
         // writeってどういう使い分け？
 //        if (!rCtx.response().isChunked) {

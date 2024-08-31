@@ -5,6 +5,7 @@ package api
 
 import TestController
 import api.controller.CheckForUpdatesController
+import api.controller.SearchLiveVideoController
 import io.vertx.core.Vertx
 import io.vertx.core.http.HttpMethod
 import io.vertx.ext.web.Router
@@ -38,7 +39,8 @@ class ApiVerticle : CoroutineVerticle() {
     private fun setup(router: Router) {
         val controllers = listOf(
             TestController(pool, this),
-            CheckForUpdatesController(this)
+            CheckForUpdatesController(this),
+            SearchLiveVideoController(this)
         )
         controllers.forEach { it.addRoute(router) }
     }

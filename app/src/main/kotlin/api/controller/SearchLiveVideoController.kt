@@ -23,30 +23,36 @@ class SearchLiveVideoController (
         val webClient = WebClient.create(rCtx.vertx())
         val dotenv = Dotenv.load()
         val apiKey = dotenv["API_KEY"]
+        val channelId = rCtx.queryParams().get("channel_id")
+
 
         val endPoint = "https://www.googleapis.com/youtube/v3/search"
 
         // params
-        val channelId = "UCV2vH-9d4UHEbnRjKC0BBmw" // arise
+//        val channelId = "UCV2vH-9d4UHEbnRjKC0BBmw" // arise
+//        val channelId = "UCu2Fxqf37DAZ0ZhIsd1FZwA" // st6
+//        val channelId = "UC5pQNAOnkkly0doFFDsBPxw" // umehara
         val part = "snippet"
         val order = "date"
         val type = "video"
-        val eventType = "live"
-        val maxResults = 5 // 5-50
+        val maxResults = 10 // 5-50
 
-        val url = "$endPoint?part=$part&channelId=$channelId&key=$apiKey&order=$order&type=$type&eventType=$eventType&maxResults=$maxResults"
-        println(url)
+//        val url = "$endPoint?part=$part&channelId=$channelId&key=$apiKey&order=$order&type=$type&eventType=$eventType&maxResults=$maxResults"
+        val url = "$endPoint?part=$part&channelId=$channelId&key=$apiKey&order=$order&type=$type&maxResults=$maxResults"
         val response = webClient.getAbs(url).send().coAwait()
+
+        // test
+//        val bodyString = response.bodyAsString("UTF-8")
+//        println(bodyString)
+
         val videos = response.bodyAsJsonObject().getJsonArray("items").map { item ->
             item as JsonObject
             getVideo(item)
         }
 
-        // test
-        val bodyString = response.bodyAsString("UTF-8")
-        println(bodyString)
+
         // live配信のvideoIdを一つ取得
-        val videoOnLive = videos.firstOrNull() { it.liveBroadcastContent == LiveBroadcastContent.LIVE }
+        val videoOnLive = videos.firstOrNull { it.liveBroadcastContent == LiveBroadcastContent.LIVE }
         // live配信のvideoIdを取得
 
         // videoIdがない場合はエラーを返す
