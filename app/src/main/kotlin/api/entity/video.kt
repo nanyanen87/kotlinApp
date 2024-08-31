@@ -5,11 +5,11 @@ import java.time.LocalDateTime
 
 data class Video (
     val id: Int,
-//    val publishedAt: LocalDateTime,
+//    val publishedAt: LocalDateTime,  // "publishedAt": "2024-08-29T10:00:13Z"
     val title: String,
     val url: String,
     val description: String,
-//    val thumbnail: YoutubeThumbnail,
+//    val thumbnails: List<YoutubeThumbnail>,
     val liveBroadcastContent: LiveBroadcastContent,
 )
 
@@ -36,7 +36,7 @@ fun getVideo(json: JsonObject): Video {
     val title = json.getJsonObject("snippet").getString("title")
     val url = "https://www.youtube.com/watch?v=$videoId"
     val description = json.getJsonObject("snippet").getString("description")
-//    val thumbnail = getThumbnail(json.getJsonObject("snippet").getJsonObject("thumbnails"))
+//    val thumbnails = getThumbnails(json.getJsonObject("snippet").getJsonObject("thumbnails"))
     val liveBroadcastContent = LiveBroadcastContent.fromCode(json.getJsonObject("snippet").getString("liveBroadcastContent"))
 
     return Video(
@@ -45,15 +45,35 @@ fun getVideo(json: JsonObject): Video {
         title,
         url,
         description,
-//        thumbnail,
+//        thumbnails,
         liveBroadcastContent,
     )
 }
 
-fun getThumbnail(json: JsonObject): YoutubeThumbnail {
-    return YoutubeThumbnail(
-        json.getString("url"),
-        json.getInteger("width"),
-        json.getInteger("height"),
-    )
+// "thumbnails": {
+//          "default": {
+//            "url": "https://i.ytimg.com/vi/eiM6JodAJBs/default.jpg",
+//            "width": 120,
+//            "height": 90
+//          },
+//          "medium": {
+//            "url": "https://i.ytimg.com/vi/eiM6JodAJBs/mqdefault.jpg",
+//            "width": 320,
+//            "height": 180
+//          },
+//          "high": {
+//            "url": "https://i.ytimg.com/vi/eiM6JodAJBs/hqdefault.jpg",
+//            "width": 480,
+//            "height": 360
+//          }
+//        },
+fun getThumbnails(json: JsonObject): List<YoutubeThumbnail> {
+    return json.fieldNames().map { key ->
+        val thumbnail = json.getJsonObject(key)
+        YoutubeThumbnail(
+            thumbnail.getString("url"),
+            thumbnail.getInteger("width"),
+            thumbnail.getInteger("height"),
+        )
+    }
 }

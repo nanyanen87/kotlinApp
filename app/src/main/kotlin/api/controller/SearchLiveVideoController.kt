@@ -35,15 +35,15 @@ class SearchLiveVideoController (
         val part = "snippet"
         val order = "date"
         val type = "video"
+//        val eventType = "live" channelIdと併用できない？itemsが空になる
         val maxResults = 10 // 5-50
 
-//        val url = "$endPoint?part=$part&channelId=$channelId&key=$apiKey&order=$order&type=$type&eventType=$eventType&maxResults=$maxResults"
         val url = "$endPoint?part=$part&channelId=$channelId&key=$apiKey&order=$order&type=$type&maxResults=$maxResults"
         val response = webClient.getAbs(url).send().coAwait()
 
         // test
-//        val bodyString = response.bodyAsString("UTF-8")
-//        println(bodyString)
+        val bodyString = response.bodyAsString("UTF-8")
+        println(bodyString)
 
         val videos = response.bodyAsJsonObject().getJsonArray("items").map { item ->
             item as JsonObject
@@ -57,12 +57,10 @@ class SearchLiveVideoController (
 
         // videoIdがない場合はエラーを返す
         if (videoOnLive == null) {
-            rCtx.response().setStatusCode(404).end("Not Found")
+            rCtx.response().setStatusCode(404).end("live video not found")
             return
         }
-        println(videoOnLive.url)
         rCtx.response().end(videoOnLive.url)
-
 
     }
 }
